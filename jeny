@@ -12,3 +12,7 @@ mysql-connector==2.2.9
 mysqlclient==2.1.1
 SQLAlchemy==1.4.44
 Werkzeug==2.2.2
+
+
+python -m venv venv
+.\venv\Scripts\Activate.ps1
