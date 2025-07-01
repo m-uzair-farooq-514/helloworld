@@ -16,3 +16,97 @@ Werkzeug==2.2.2
 
 python -m venv venv
 .\venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+
+
+
+
+
+How to Run the Flask Application on Windows (VS Code)
+1. Prerequisites
+Before you start, make sure you have the following installed on your Windows machine:
+Python 3.x: Download and install from python.org. Make sure to check the option "Add Python to PATH" during installation.
+VS Code: Download and install from code.visualstudio.com.
+Git (Optional but Recommended): For easier project management, download from git-scm.com.
+2. Extract the Project
+Download the ZIP file: If you haven't already, download the Flask_Security_Project_Uzair_231338.zip file I provided.
+Extract the contents: Right-click the ZIP file and select "Extract All..." Choose a convenient location on your computer (e.g., C:\Users\YourUser\Documents\Flask_Security_Project).
+3. Open the Project in VS Code
+Open VS Code.
+Go to File > Open Folder...
+Navigate to the extracted project folder (e.g., C:\Users\YourUser\Documents\Flask_Security_Project\crud-flask-main) and click "Select Folder."
+4. Set up a Virtual Environment (Recommended)
+It's best practice to use a virtual environment to manage project dependencies, preventing conflicts with other Python projects.
+Open the Integrated Terminal in VS Code: Go to Terminal > New Terminal (or press Ctrl+`` ).
+Create a virtual environment: In the terminal, run:
+bash
+python -m venv venv
+(This creates a folder named venv in your project directory.)
+Activate the virtual environment:
+For PowerShell:
+powershell
+.\venv\Scripts\Activate.ps1
+For Command Prompt (cmd.exe):
+cmd
+venv\Scripts\activate.bat
+For Git Bash:
+bash
+source venv/Scripts/activate
+You should see (venv) at the beginning of your terminal prompt, indicating the virtual environment is active.
+5. Install Dependencies
+With your virtual environment activated, install the required Python packages:
+In the VS Code terminal, navigate to the crud-flask-main directory (if you're not already there):
+bash
+cd crud-flask-main
+Install the dependencies:
+bash
+pip install -r requirements.txt
+Note: You might encounter issues with mysqlclient if you don't have MySQL development headers. I've updated the requirements.txt to use PyMySQL which is a pure Python client and generally easier to install on Windows. If you still face issues, ensure PyMySQL is listed in requirements.txt and try installing it directly: pip install PyMySQL.
+6. Configure the Database (Important!)
+The application uses a MySQL database. You'll need to set up a MySQL server and configure the application to connect to it.
+Install MySQL Server: If you don't have MySQL installed, download and install MySQL Community Server from dev.mysql.com/downloads/mysql/. During installation, remember your root password.
+Create a Database and User:
+Open MySQL Workbench, MySQL Shell, or a command prompt with MySQL client.
+Log in as root:
+sql
+mysql -u root -p
+(Enter your root password when prompted)
+Create a new database (e.g., flask_crud_db):
+sql
+CREATE DATABASE flask_crud_db;
+Create a new user (e.g., flaskuser) and grant privileges:
+sql
+CREATE USER 'flaskuser'@'localhost' IDENTIFIED BY 'your_db_password';
+GRANT ALL PRIVILEGES ON flask_crud_db.* TO 'flaskuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+Replace your_db_password with a strong password!
+Update Application Configuration:
+Open the aplication/__init__.py file in VS Code.
+Locate the database configuration section (around line 20-30).
+Update the SQLALCHEMY_DATABASE_URI to match your MySQL setup:
+python
+aplication.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://flaskuser:your_db_password@localhost/flask_crud_db"
+Make sure flaskuser, your_db_password, and flask_crud_db match what you created.
+7. Run the Flask Application
+Ensure your virtual environment is active (you should see (venv) in your terminal prompt).
+Navigate to the project root directory (where run.py is located) in the VS Code terminal:
+bash
+cd crud-flask-main
+Run the application:
+bash
+python run.py
+You should see output similar to this:
+ * Serving Flask app 'aplication'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment.
+Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5310
+Press CTRL+C to quit
+Open your web browser and go to http://127.0.0.1:5310.
+8. Test the Security Features
+Rate Limiting: Try to register or log in multiple times quickly (more than 5 times in a minute ) to see the rate limit activate.
+Secure Headers/CSP: Open your browser's developer tools (usually F12), go to the "Network" tab, refresh the page, and click on any request (e.g., the main document). Look at the "Response Headers" to see Content-Security-Policy, X-Frame-Options, etc.
+Logging: Check the logs/security.log file within your project directory after performing actions like successful logins, failed logins, and registrations. You should see entries for these events.
+If you encounter any issues, feel free to ask! Provide the error messages you see in the VS Code terminal or browser console, and I'll help you troubleshoot.
